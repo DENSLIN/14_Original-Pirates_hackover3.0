@@ -1,5 +1,6 @@
 const router = require('express').Router();
 let Event = require('../models/event.model');
+const axios = require("axios");
 
 router.route('/').get((req, res) => {
     Event.find()
@@ -63,38 +64,6 @@ router.route('/update/:id').post((req, res) => {
             Event.duration = Number(req.body.duration);
 
             Event.save()
-                .then(() => res.json('Event updated!'))
-                .catch(err => res.status(400).json('Error: ' + err));
-        })
-        .catch(err => res.status(400).json('Error: ' + err));
-});
-router.route('/addcustomer/:id').post((req, res) => {
-    Event.findById(req.params.id)
-        .then(Event => {
-            Event.eventname = req.body.eventname;
-            Event.eventdis = req.body.eventdis;
-            Event.organiser = req.body.organiser;
-            const customer = req.body.customer;
-            Event.location  = req.body.location;
-            Event.date = Date.parse(req.body.date);
-            Event.type = req.body.type;
-            Event.prize = req.body.prize;
-            Event.capacity = req.body.capacity;
-            Event.duration = Number(req.body.duration);
-            const newEvent = new Event({
-                eventname,
-                eventdis ,
-                organiser,
-                customer,
-                location,
-                date,
-                type,
-                prize,
-                capacity,
-                duration
-            });
-
-            newEvent.save()
                 .then(() => res.json('Event updated!'))
                 .catch(err => res.status(400).json('Error: ' + err));
         })
